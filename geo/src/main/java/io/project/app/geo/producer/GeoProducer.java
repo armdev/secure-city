@@ -1,6 +1,5 @@
 package io.project.app.geo.producer;
 
-import io.project.app.geo.model.GpsData;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -28,18 +27,51 @@ public class GeoProducer {
 
     @Autowired
     private TransactionTemplate transactionTemplate;
-    
+
     private static final String ALERT_TOPIC = "alert";
 
+    /**
+     *
+     *
+     * @param message
+     *
+     * The sendMessage method sends a Kafka message using a ProducerRecord
+     * object created with the ALERT_TOPIC, transactionId, and message
+     * parameters.
+     *
+     * The transactionId is a unique identifier generated using the
+     * UUID.randomUUID() method, which ensures that each message has a unique
+     * ID.
+     *
+     * The KafkaHeaders class is used to add headers to the producerRecord
+     * object, such as the topic, key, and a custom header called
+     * "X-Producer-Header".
+     *
+     * The TransactionTemplate class is used to execute the Kafka send operation
+     * within a transaction. This ensures that the send operation is atomic, and
+     * either succeeds or fails as a whole.
+     *
+     * The kafkaTemplate.send() method sends the message asynchronously and
+     * returns a CompletableFuture<SendResult<String, String>> object.
+     *
+     * The future.whenComplete() method is used to handle the completion of the
+     * send() operation. If an exception is thrown during the operation, it is
+     * caught and logged as an error message using the log.error() method.
+     * Otherwise, a success message is logged using the log.info() method.
+     *
+     * This Kafka sender follows best practices for sending messages
+     * asynchronously and transactionally, which ensures that messages are
+     * reliably delivered to the Kafka cluster.
+     */
     @SneakyThrows
     @Transactional
     public void sendMessage(String message) {
-        
+
         String transactionId = UUID.randomUUID().toString();
-        
+
         ProducerRecord<String, String> producerRecord
                 = new ProducerRecord<>(ALERT_TOPIC, transactionId, message);
-        
+
         producerRecord.headers().add(KafkaHeaders.TOPIC, ALERT_TOPIC.getBytes(StandardCharsets.UTF_8));
         producerRecord.headers().add(KafkaHeaders.KEY, transactionId.getBytes(StandardCharsets.UTF_8));
         producerRecord.headers().add("X-Producer-Header", "geo".getBytes(StandardCharsets.UTF_8));
