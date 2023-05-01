@@ -1,0 +1,45 @@
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: ALWAYS
+  endpoints:
+    jmx:
+      exposure:
+       include: '*'
+    web:
+     exposure:
+      include: '*'
+      base-path: /actuator
+    cors:
+      allowed-origins: 'true'
+      enabled-by-default: 'false'
+
+server:
+  port: 12346
+  connection-timeout: 30000
+
+      
+spring:
+  application:
+    name: alert
+
+  kafka:   
+    listener:
+      ack-mode: MANUAL
+    producer:
+      batch-size: 1048570000
+      bootstrap-servers: kafka1:9092,kafka2:9093
+      buffer-memory: 97938193
+      client-id: alert
+      group-id: alert
+      retries: 10      
+    consumer:
+      bootstrap-servers: kafka1:9092,kafka2:9093
+      group-id: alert
+      auto-offset-reset: earliest         
+      enable-auto-commit: false
+      session.timeout.ms: 30000
+      max-poll-records: 10
+      fetch-max-wait: 100
+      fetch-min-size: 504857600

@@ -1,0 +1,123 @@
+version: "3.2"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.9
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - kafkanet
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8585:8080"
+    depends_on:
+      - kafka1
+      - kafka2
+    links:
+      - kafka1
+      - kafka2
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:9092 kafka2:9093
+
+    networks:
+      - kafkanet
+
+  kafka1:
+    image: confluentinc/cp-enterprise-kafka:7.0.9
+    container_name: kafka1
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka1
+      KAFKA_BROKER_ID: 800
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,PLAINTEXT_HOST://kafka1:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CREATE_TOPICS: "alert:3:1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_RETENTION_HOURS: 336 # 2 weeks
+      KAFKA_HEAP_OPTS: "-Xmx2g -Xms2g"
+      # KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      #KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: ~/volumes/kafka1/logs
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/volumes/kafka1/800:/kafka
+    networks:
+      - kafkanet
+
+  kafka2:
+    image: confluentinc/cp-enterprise-kafka:7.0.9
+    container_name: kafka2
+    ports:
+      - "9093:9092"
+      - "29093:29092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka2
+      KAFKA_BROKER_ID: 900
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9093,PLAINTEXT_HOST://kafka2:29093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_LOG_RETENTION_HOURS: 336 # 2 weeks
+      KAFKA_HEAP_OPTS: "-Xmx2g -Xms2g"
+      KAFKA_CREATE_TOPICS: "alert:3:1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      # KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    #  KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: ~/volumes/kafka2/logs
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/volumes/kafka2/900:/kafka
+    networks:
+      - kafkanet
+      
+  geo:
+    image: geo  
+    build: ./geo
+    container_name: geo   
+    links:      
+      - kafka1    
+      - kafka2    
+    depends_on:     
+     - kafka1    
+     - kafka2          
+    ports:
+      - '12345:12345'  
+    networks:
+      - kafkanet
+      
+  alert:
+    image: alert  
+    build: ./alert
+    container_name: alert   
+    links:      
+      - kafka1    
+      - kafka2    
+    depends_on:     
+     - kafka1    
+     - kafka2          
+    ports:
+      - '12346:12346'  
+    networks:
+      - kafkanet
+
+
+networks:
+  kafkanet:
+    driver: bridge
+    ipam:
+      driver: default

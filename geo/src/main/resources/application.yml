@@ -1,0 +1,37 @@
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: ALWAYS
+  endpoints:
+    jmx:
+      exposure:
+       include: '*'
+    web:
+     exposure:
+      include: '*'
+      base-path: /actuator
+    cors:
+      allowed-origins: 'true'
+      enabled-by-default: 'false'
+
+server:
+  port: 12345
+  connection-timeout: 30000
+
+      
+spring:
+  application:
+    name: geo
+
+  kafka:   
+    listener:
+      ack-mode: MANUAL
+    producer:
+      batch-size: 1048570000
+      bootstrap-servers: kafka1:9092,kafka2:9093
+     # bootstrap-servers: localhost:9092,localhost:9093
+      buffer-memory: 97938193
+      client-id: geo
+      group-id: geo
+      retries: 10       
