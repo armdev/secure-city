@@ -1,5 +1,6 @@
 package io.project.app.geo.producer;
 
+import io.project.app.geo.model.GpsData;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -27,14 +28,19 @@ public class GeoProducer {
 
     @Autowired
     private TransactionTemplate transactionTemplate;
+    
+    private static final String ALERT_TOPIC = "alert";
 
     @SneakyThrows
     @Transactional
     public void sendMessage(String message) {
+        
         String transactionId = UUID.randomUUID().toString();
+        
         ProducerRecord<String, String> producerRecord
-                = new ProducerRecord<>("alert", transactionId, message);
-        producerRecord.headers().add(KafkaHeaders.TOPIC, "alert".getBytes(StandardCharsets.UTF_8));
+                = new ProducerRecord<>(ALERT_TOPIC, transactionId, message);
+        
+        producerRecord.headers().add(KafkaHeaders.TOPIC, ALERT_TOPIC.getBytes(StandardCharsets.UTF_8));
         producerRecord.headers().add(KafkaHeaders.KEY, transactionId.getBytes(StandardCharsets.UTF_8));
         producerRecord.headers().add("X-Producer-Header", "geo".getBytes(StandardCharsets.UTF_8));
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {

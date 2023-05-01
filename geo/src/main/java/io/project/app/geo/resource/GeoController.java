@@ -4,6 +4,7 @@
  */
 package io.project.app.geo.resource;
 
+import com.google.gson.Gson;
 import io.project.app.geo.services.GpsDataGenerator;
 import io.project.app.geo.model.GpsData;
 import io.project.app.geo.producer.GeoProducer;
@@ -26,20 +27,21 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("/api/v2/events")
 public class GeoController {
-
+    
     private final GeoProducer geoProducer;
-
+    
     @Autowired
     public GeoController(GeoProducer geoProducer) {
         this.geoProducer = geoProducer;
     }
-
+    
     @PostMapping(path = "/send")
     public ResponseEntity create() {
         GpsData gpsData = GpsDataGenerator.generateWithEvent();
-        geoProducer.sendMessage(gpsData.toString());
+        Gson gson = new Gson();
+        geoProducer.sendMessage(gson.toJson(gpsData));
         return ResponseEntity.status(HttpStatus.OK).body("Done");
-
+        
     }
-
+    
 }

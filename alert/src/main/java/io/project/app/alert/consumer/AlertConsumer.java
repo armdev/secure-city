@@ -1,5 +1,6 @@
 package io.project.app.alert.consumer;
 
+import com.google.gson.Gson;
 import io.project.app.alert.model.GpsData;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,14 +16,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class GeoDataConsumer {
+public class AlertConsumer {
 
     @KafkaListener(topics = "alert", groupId = "alert-notify", concurrency = "3")
     public void first(@Payload String payload,
             @Header(KafkaHeaders.KEY) String key,
             @Header(KafkaHeaders.TOPIC) String topic,
             @Header("X-Producer-Header") String header
-         
     ) {
         log.info("----------- Alert 1 start -----------");
 
@@ -31,9 +31,10 @@ public class GeoDataConsumer {
         log.info("header '{}' ", header);
         log.info("TOPIC '{}' ", topic);
 
-     
+        Gson gson = new Gson();
+        GpsData toJson = gson.fromJson(payload, GpsData.class);
 
-        log.info("Payload '{}' ", payload);
+        log.info("Payload '{}' ", toJson.toString());
 
         log.info("----------- Alert 1 done -----------");
     }
@@ -43,7 +44,6 @@ public class GeoDataConsumer {
             @Header(KafkaHeaders.KEY) String key,
             @Header(KafkaHeaders.TOPIC) String topic,
             @Header("X-Producer-Header") String header
-          
     ) {
         log.info("----------- Alert 2 start -----------");
 
@@ -52,8 +52,10 @@ public class GeoDataConsumer {
         log.info("header '{}' ", header);
         log.info("TOPIC '{}' ", topic);
 
-       
-        log.info("Payload '{}' ", payload);
+        Gson gson = new Gson();
+        GpsData toJson = gson.fromJson(payload, GpsData.class);
+
+        log.info("Payload '{}' ", toJson.toString());
 
         log.info("----------- Alert 2 done -----------");
     }

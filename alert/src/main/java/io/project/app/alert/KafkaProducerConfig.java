@@ -1,14 +1,13 @@
 package io.project.app.alert;
 
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -17,6 +16,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+
 import org.springframework.kafka.transaction.KafkaTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -29,8 +29,16 @@ public class KafkaProducerConfig {
     private String bootstrapServers;
 
     @Bean
-    public NewTopic topic() {
+    public NewTopic topicPolice() {
         return TopicBuilder.name("police")
+                .partitions(3)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic topicAmbulance() {
+        return TopicBuilder.name("ambulance")
                 .partitions(3)
                 .replicas(1)
                 .build();
@@ -46,8 +54,7 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
-    }   
- 
+    }
 
     @Bean
     public KafkaTransactionManager<String, String> kafkaTransactionManager(ProducerFactory<String, String> producerFactory) {
