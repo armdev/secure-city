@@ -1,5 +1,8 @@
 package io.project.app.alert.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -8,14 +11,17 @@ import lombok.Data;
  * @author armena
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GpsData implements Serializable {
 
+    @JsonProperty("lat")
     private double lat;
-
+    @JsonProperty("lon")
     private double lon;
-    
+    @JsonProperty("event")
     private String event;
-    
+    @JsonProperty("status")
     private String status;
 
     public GpsData(double lat, double lon, String event, String status) {
