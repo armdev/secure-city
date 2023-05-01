@@ -109,7 +109,8 @@ services:
       - kafka2    
     depends_on:     
      - kafka1    
-     - kafka2          
+     - kafka2
+     - geo  
     ports:
       - '12346:12346'  
     networks:
@@ -125,7 +126,8 @@ services:
       - kafka2    
     depends_on:     
      - kafka1    
-     - kafka2          
+     - kafka2
+     - alert 
     ports:
       - '12347:12347'  
     networks:
@@ -141,23 +143,25 @@ services:
       - kafka2    
     depends_on:     
      - kafka1    
-     - kafka2          
+     - kafka2
+     - alert
     ports:
       - '12348:12348'  
     networks:
       - kafkanet
       
       
-  lake:
-    image: lake  
-    build: ./lake
-    container_name: lake   
+  lakehouse:
+    image: lakehouse  
+    build: ./lakehouse
+    container_name: lakehouse   
     links:      
       - kafka1    
       - kafka2    
     depends_on:     
      - kafka1    
-     - kafka2          
+     - kafka2
+     - alert
     ports:
       - '12349:12349'  
     networks:

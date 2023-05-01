@@ -10,6 +10,7 @@
         <module>alert</module>
         <module>police</module>
         <module>ambulance</module>
+        <module>lakehouse</module>
           
     </modules>
     <properties>

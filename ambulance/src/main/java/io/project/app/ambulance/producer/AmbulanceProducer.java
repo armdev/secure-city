@@ -22,7 +22,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AlertProducer {
+public class AmbulanceProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
