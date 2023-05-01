@@ -21,7 +21,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GeoProducer {
+public class IncidentProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 

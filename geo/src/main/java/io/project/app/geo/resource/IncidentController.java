@@ -6,8 +6,8 @@ package io.project.app.geo.resource;
 
 import com.google.gson.Gson;
 import io.project.app.geo.services.GpsDataGenerator;
-import io.project.app.geo.model.GpsData;
-import io.project.app.geo.producer.GeoProducer;
+import io.project.app.geo.incident.IncidentData;
+import io.project.app.geo.producer.IncidentProducer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequestMapping("/api/v2/events")
-public class GeoController {
+public class IncidentController {
     
-    private final GeoProducer geoProducer;
+    private final IncidentProducer geoProducer;
     
     @Autowired
-    public GeoController(GeoProducer geoProducer) {
+    public IncidentController(IncidentProducer geoProducer) {
         this.geoProducer = geoProducer;
     }
     
     @PostMapping(path = "/send")
     public ResponseEntity create() {
-        GpsData gpsData = GpsDataGenerator.generateWithEvent();
+        IncidentData gpsData = GpsDataGenerator.generateWithEvent();
         Gson gson = new Gson();
         geoProducer.sendMessage(gson.toJson(gpsData));
         return ResponseEntity.status(HttpStatus.OK).body("Done");

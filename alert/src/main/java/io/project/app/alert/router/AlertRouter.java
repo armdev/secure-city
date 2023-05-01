@@ -1,7 +1,7 @@
 package io.project.app.alert.producer;
 
 import io.project.app.alert.enums.IncidentEvent;
-import io.project.app.alert.model.GpsData;
+import io.project.app.alert.incident.IncidentData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ public class AlertRouter {
 
     private final AlertProducer alertProducer;
 
-    public void router(GpsData alert) {
+    public void router(IncidentData alert) {
         IncidentEvent event = IncidentEvent.valueOf(alert.getEvent());
 
         switch (event) {

@@ -114,6 +114,54 @@ services:
       - '12346:12346'  
     networks:
       - kafkanet
+      
+      
+  police:
+    image: police  
+    build: ./police
+    container_name: police   
+    links:      
+      - kafka1    
+      - kafka2    
+    depends_on:     
+     - kafka1    
+     - kafka2          
+    ports:
+      - '12347:12347'  
+    networks:
+      - kafkanet
+      
+      
+  ambulance:
+    image: ambulance  
+    build: ./ambulance
+    container_name: ambulance   
+    links:      
+      - kafka1    
+      - kafka2    
+    depends_on:     
+     - kafka1    
+     - kafka2          
+    ports:
+      - '12348:12348'  
+    networks:
+      - kafkanet
+      
+      
+  lake:
+    image: lake  
+    build: ./lake
+    container_name: lake   
+    links:      
+      - kafka1    
+      - kafka2    
+    depends_on:     
+     - kafka1    
+     - kafka2          
+    ports:
+      - '12349:12349'  
+    networks:
+      - kafkanet
 
 
 networks:

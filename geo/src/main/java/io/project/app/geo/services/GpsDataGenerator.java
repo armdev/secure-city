@@ -1,6 +1,6 @@
 package io.project.app.geo.services;
 
-import io.project.app.geo.model.GpsData;
+import io.project.app.geo.incident.IncidentData;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -11,20 +11,20 @@ public class GpsDataGenerator {
     private static final double MAX_DISTANCE_KM = 5.0;
     private static final double EARTH_RADIUS_KM = 6371.0;
 
-    public static GpsData generate() {
+    public static IncidentData generate() {
         double lat = BERLIN_LATITUDE + ThreadLocalRandom.current().nextDouble(-MAX_DISTANCE_KM, MAX_DISTANCE_KM) / EARTH_RADIUS_KM * (180 / Math.PI);
         double lon = BERLIN_LONGITUDE + ThreadLocalRandom.current().nextDouble(-MAX_DISTANCE_KM, MAX_DISTANCE_KM) / EARTH_RADIUS_KM * (180 / Math.PI) / Math.cos(BERLIN_LATITUDE * Math.PI / 180);
-        return new GpsData(lat, lon);
+        return new IncidentData(lat, lon);
     }
 
-    public static GpsData generateWithEvent() {
+    public static IncidentData generateWithEvent() {
         double lat = BERLIN_LATITUDE + ThreadLocalRandom.current().nextDouble(-MAX_DISTANCE_KM, MAX_DISTANCE_KM) / EARTH_RADIUS_KM * (180 / Math.PI);
         double lon = BERLIN_LONGITUDE + ThreadLocalRandom.current().nextDouble(-MAX_DISTANCE_KM, MAX_DISTANCE_KM) / EARTH_RADIUS_KM * (180 / Math.PI) / Math.cos(BERLIN_LATITUDE * Math.PI / 180);
 
         String event = RandomEvent.randomEvent().name();
 
         String status = RandomStatus.randomStatus().name();
-        return new GpsData(lat, lon, event, status);
+        return new IncidentData(lat, lon, event, status);
     }
 }
 

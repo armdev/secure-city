@@ -8,6 +8,8 @@
     <modules>       
         <module>geo</module>
         <module>alert</module>
+        <module>police</module>
+        <module>ambulance</module>
           
     </modules>
     <properties>

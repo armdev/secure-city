@@ -1,8 +1,7 @@
-package io.project.app.alert.consumer;
+package io.project.app.police.consumer;
 
 import com.google.gson.Gson;
-import io.project.app.alert.incident.IncidentData;
-import io.project.app.alert.producer.AlertRouter;
+import io.project.app.police.incident.IncidentData;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,11 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AlertConsumer {
+public class PolicDutyConsumer {
 
-    private final AlertRouter alertService;
-
-    @KafkaListener(topics = "alert", groupId = "alert-notify", concurrency = "3")
+    @KafkaListener(topics = "police", groupId = "police-notify", concurrency = "3")
     public void receiveAndSendToAlertRouter(@Payload String payload,
             @Header(KafkaHeaders.KEY) String key,
             @Header(KafkaHeaders.TOPIC) String topic,
@@ -38,22 +35,6 @@ public class AlertConsumer {
         Gson gson = new Gson();
         IncidentData alert = gson.fromJson(payload, IncidentData.class);
 
-        alertService.router(alert);
     }
 
-    @KafkaListener(topics = "alert", groupId = "alert-store", concurrency = "3")
-    public void receiveAndSendToLakeMicroserviceForPersistInThePostgres(@Payload String payload,
-            @Header(KafkaHeaders.KEY) String key,
-            @Header(KafkaHeaders.TOPIC) String topic,
-            @Header("X-Producer-Header") String header
-    ) {
-        log.info("From Alert to Postgres");
-
-        log.info("KEY '{}' ", key);
-        log.info("Payload '{}' ", payload);
-
-        Gson gson = new Gson();
-        IncidentData toJson = gson.fromJson(payload, IncidentData.class);
-
-    }
 }
