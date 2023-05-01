@@ -4,7 +4,7 @@
  */
 package io.project.app.lakehouse;
 
-import io.project.app.lakehouse.incident.IncidentData;
+import io.project.app.lakehouse.domain.IncidentData;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;

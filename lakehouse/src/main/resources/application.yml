@@ -51,7 +51,7 @@ spring:
     show-sql: false
     database: POSTGRESQL
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
       dialect: org.hibernate.dialect.PostgreSQL95Dialect
     properties:

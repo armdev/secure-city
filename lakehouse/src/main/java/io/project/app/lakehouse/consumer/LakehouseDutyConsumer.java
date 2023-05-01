@@ -1,7 +1,7 @@
 package io.project.app.lakehouse.consumer;
 
 import com.google.gson.Gson;
-import io.project.app.lakehouse.incident.IncidentData;
+import io.project.app.lakehouse.domain.IncidentData;
 
 
 import lombok.RequiredArgsConstructor;
