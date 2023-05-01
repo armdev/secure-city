@@ -1,0 +1,6 @@
+In this configuration, we've added a few key PostgreSQL parameters to help it handle a high volume of transactions:
+
+max_connections: This sets the maximum number of concurrent connections that PostgreSQL will allow. By setting it to 500, we ensure that the database can handle a large number of concurrent requests.
+shared_buffers: This sets the amount of memory that PostgreSQL will use for caching data in memory. By setting it to 1GB, we allow the database to cache frequently used data in memory, reducing the need to read from disk.
+effective_cache_size: This sets the total amount of memory that PostgreSQL will use for caching data in memory. By setting it to 3GB, we allow the database to cache a large amount of frequently used data in memory, further reducing the need to read from disk.
+maintenance_work_mem: This sets the amount of memory that PostgreSQL will use for maintenance tasks, such as indexing and sorting. By setting it to 512MB, we ensure that these tasks can be performed efficiently without causing performance issues.
