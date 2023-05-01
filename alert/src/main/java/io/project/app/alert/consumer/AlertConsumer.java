@@ -2,6 +2,9 @@ package io.project.app.alert.consumer;
 
 import com.google.gson.Gson;
 import io.project.app.alert.model.GpsData;
+import io.project.app.alert.producer.AlertRouter;
+
+import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,47 +19,41 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AlertConsumer {
 
+    private final AlertRouter alertService;
+
     @KafkaListener(topics = "alert", groupId = "alert-notify", concurrency = "3")
-    public void first(@Payload String payload,
+    public void receiveAndSendToAlertRouter(@Payload String payload,
             @Header(KafkaHeaders.KEY) String key,
             @Header(KafkaHeaders.TOPIC) String topic,
             @Header("X-Producer-Header") String header
     ) {
-        log.info("----------- Alert 1 start -----------");
+        log.info("From alert to Router");
 
         log.info("KEY '{}' ", key);
-
-        log.info("header '{}' ", header);
-        log.info("TOPIC '{}' ", topic);
+        log.info("Payload '{}' ", payload);
 
         Gson gson = new Gson();
-        GpsData toJson = gson.fromJson(payload, GpsData.class);
+        GpsData alert = gson.fromJson(payload, GpsData.class);
 
-        log.info("Payload '{}' ", toJson.toString());
-
-        log.info("----------- Alert 1 done -----------");
+        alertService.router(alert);
     }
 
     @KafkaListener(topics = "alert", groupId = "alert-store", concurrency = "3")
-    public void second(@Payload String payload,
+    public void receiveAndSendToLakeMicroserviceForPersistInThePostgres(@Payload String payload,
             @Header(KafkaHeaders.KEY) String key,
             @Header(KafkaHeaders.TOPIC) String topic,
             @Header("X-Producer-Header") String header
     ) {
-        log.info("----------- Alert 2 start -----------");
+        log.info("From Alert to Postgres");
 
         log.info("KEY '{}' ", key);
-
-        log.info("header '{}' ", header);
-        log.info("TOPIC '{}' ", topic);
+        log.info("Payload '{}' ", payload);
 
         Gson gson = new Gson();
         GpsData toJson = gson.fromJson(payload, GpsData.class);
 
-        log.info("Payload '{}' ", toJson.toString());
-
-        log.info("----------- Alert 2 done -----------");
     }
 }
