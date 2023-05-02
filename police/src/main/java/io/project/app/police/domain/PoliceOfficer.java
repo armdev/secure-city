@@ -38,4 +38,10 @@ public class PoliceOfficer implements Serializable {
     @Column(name = "age")
     private Integer age;
 
+    public PoliceOfficer(String name, String badgeNumber, Integer age) {
+        this.name = name;
+        this.badgeNumber = badgeNumber;
+        this.age = age;
+    }
+
 }

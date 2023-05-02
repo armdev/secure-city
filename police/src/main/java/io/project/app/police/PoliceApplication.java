@@ -1,8 +1,11 @@
 package io.project.app.police;
 
 import io.project.app.police.domain.PoliceCar;
+import io.project.app.police.domain.PoliceOfficer;
 import io.project.app.police.repositories.PoliceCarJpaRepository;
 import io.project.app.police.repositories.PoliceOfficerJpaRepository;
+import io.project.app.police.services.PoliceCarGenerator;
+import io.project.app.police.services.PoliceOfficerGenerator;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -60,20 +63,15 @@ public class PoliceApplication {
     @EventListener(ApplicationReadyEvent.class)
     @Transactional(transactionManager = "transactionManager")
     public void init() {
-        List<PoliceCar> cars = policeCarJpaRepository.findAll();
-        if (cars.isEmpty()) {
-            PoliceCar policeCar = new PoliceCar("FORD", "Police Interceptor", 2022, "Patrol", "DD-101", LocalDateTime.now());
-            policeCarJpaRepository.save(policeCar);
-            policeCar = new PoliceCar("BMW", "Police Interceptor", 2018, "Patrol", "DD-203", LocalDateTime.now());
-            policeCarJpaRepository.save(policeCar);
-            policeCar = new PoliceCar("AUDI", "Police Interceptor", 2023, "Patrol", "DD-605", LocalDateTime.now());
-            policeCarJpaRepository.save(policeCar);
-            policeCar = new PoliceCar("FERRARI", "Police Interceptor", 2015, "Patrol", "DD-777", LocalDateTime.now());
-            policeCarJpaRepository.save(policeCar);
-            long count = policeCarJpaRepository.count();
-            log.info("Count of cars  " + count);
-
-        }
+        ///policeCarJpaRepository.deleteAll();
+        List<PoliceCar> generateCars = PoliceCarGenerator.generateCars(50);
+        policeCarJpaRepository.saveAll(generateCars);
+        long count = policeCarJpaRepository.count();
+        log.info("Count of cars  " + count);
+        List<PoliceOfficer> generateOfficers = PoliceOfficerGenerator.generateOfficers(80);
+        policeOfficerJpaRepository.saveAll(generateOfficers);
+        long officerCount = policeOfficerJpaRepository.count();
+        log.info("Count of Officer  " + officerCount);
 
     }
 }
