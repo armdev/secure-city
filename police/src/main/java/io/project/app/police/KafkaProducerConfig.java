@@ -1,9 +1,11 @@
 package io.project.app.police;
 
+import jakarta.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +15,12 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.transaction.KafkaTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 
 @EnableKafka
 @Configuration
@@ -23,6 +29,9 @@ public class KafkaProducerConfig {
 
     @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServers;
+
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
     @Bean
     public KafkaAdmin admin() {
@@ -36,6 +45,24 @@ public class KafkaProducerConfig {
         return new KafkaTemplate<>(producerFactory);
     }
 
+//    @Bean
+//    public KafkaTransactionManager<String, String> kafkaTransactionManager(ProducerFactory<String, String> producerFactory) {
+//        return new KafkaTransactionManager<>(producerFactory);
+//    }
+    @Bean
+    public KafkaTransactionManager<String, String> kafkaTransactionManager(ProducerFactory<String, String> producerFactory) {
+        KafkaTransactionManager kafkaTransactionManager = new KafkaTransactionManager(producerFactory);
+        kafkaTransactionManager.setTransactionSynchronization(AbstractPlatformTransactionManager.SYNCHRONIZATION_ON_ACTUAL_TRANSACTION);
+
+        return kafkaTransactionManager;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory);
+        return transactionManager;
+    }
 
     @Bean
     public ProducerFactory<String, String> producerFactory(KafkaProperties properties) {

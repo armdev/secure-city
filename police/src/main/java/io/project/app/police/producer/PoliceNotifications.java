@@ -14,6 +14,8 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.support.SendResult;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Slf4j
 @Service
@@ -25,6 +27,7 @@ public class PoliceNotifications {
     private static final String POLICE_TOPIC = "police";
 
     @SneakyThrows
+    @Transactional(transactionManager = "kafkaTransactionManager")
     public void sendMessageToHell(@NotNull String message) {
         String transactionId = UUID.randomUUID().toString();
         ProducerRecord<String, String> producerRecord

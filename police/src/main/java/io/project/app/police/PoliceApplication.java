@@ -26,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackages = {"io.project"})
 @Slf4j
 @EnableJpaRepositories(basePackages = {
-        "io.project.app.police.repositories"})
+    "io.project.app.police.repositories"})
 @EntityScan("io.project.app.police.domain")
 public class PoliceApplication {
 
@@ -58,24 +58,22 @@ public class PoliceApplication {
     private PoliceCarJpaRepository policeCarJpaRepository;
 
     @EventListener(ApplicationReadyEvent.class)
-  ///  @Transactional(transactionManager = "transactionManagerPrimary")
+    @Transactional(transactionManager = "transactionManager")
     public void init() {
-//        List<PoliceCar> cars = policeCarJpaRepository.findAll();
-//        if (cars.isEmpty()) {
-//            PoliceCar policeCar = new PoliceCar("FORD", "Police Interceptor", 2022, "Patrol", "DD-101", LocalDateTime.now());
-//            policeCarJpaRepository.save(policeCar);
-//            policeCar = new PoliceCar("BMW", "Police Interceptor", 2018, "Patrol", "DD-203", LocalDateTime.now());
-//            policeCarJpaRepository.save(policeCar);
-//            policeCar = new PoliceCar("AUDI", "Police Interceptor", 2023, "Patrol", "DD-605", LocalDateTime.now());
-//            policeCarJpaRepository.save(policeCar);
-//            policeCar = new PoliceCar("FERRARI", "Police Interceptor", 2015, "Patrol", "DD-777", LocalDateTime.now());
-//            policeCarJpaRepository.save(policeCar);
-//            long count = policeCarJpaRepository.count();
-//          
-//        }
-//
-       long count = policeCarJpaRepository.count();
-         log.info("Count of cars  " +count);
+        List<PoliceCar> cars = policeCarJpaRepository.findAll();
+        if (cars.isEmpty()) {
+            PoliceCar policeCar = new PoliceCar("FORD", "Police Interceptor", 2022, "Patrol", "DD-101", LocalDateTime.now());
+            policeCarJpaRepository.save(policeCar);
+            policeCar = new PoliceCar("BMW", "Police Interceptor", 2018, "Patrol", "DD-203", LocalDateTime.now());
+            policeCarJpaRepository.save(policeCar);
+            policeCar = new PoliceCar("AUDI", "Police Interceptor", 2023, "Patrol", "DD-605", LocalDateTime.now());
+            policeCarJpaRepository.save(policeCar);
+            policeCar = new PoliceCar("FERRARI", "Police Interceptor", 2015, "Patrol", "DD-777", LocalDateTime.now());
+            policeCarJpaRepository.save(policeCar);
+            long count = policeCarJpaRepository.count();
+            log.info("Count of cars  " + count);
+
+        }
 
     }
 }
