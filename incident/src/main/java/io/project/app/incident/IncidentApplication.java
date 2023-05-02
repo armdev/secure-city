@@ -1,4 +1,4 @@
-package io.project.app.geo;
+package io.project.app.incident;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -12,10 +12,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"io.project"})
-public class GeoApplication {
+public class IncidentApplication {
 
     public static void main(String[] args) {
-        final SpringApplication application = new SpringApplication(GeoApplication.class);
+        final SpringApplication application = new SpringApplication(IncidentApplication.class);
         application.setBannerMode(Banner.Mode.CONSOLE);
         application.setWebApplicationType(WebApplicationType.SERVLET);
         application.run(args);

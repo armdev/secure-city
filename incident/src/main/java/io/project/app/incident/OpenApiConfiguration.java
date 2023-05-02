@@ -1,4 +1,4 @@
-package io.project.app.geo;
+package io.project.app.incident;
 
 import org.springdoc.core.models.GroupedOpenApi;
 

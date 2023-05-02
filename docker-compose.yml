@@ -106,10 +106,10 @@ services:
     sysctls:
       - kernel.shmmax=100663296  
       
-  geo:
-    image: geo  
-    build: ./geo
-    container_name: geo   
+  incident:
+    image: incident  
+    build: ./incident
+    container_name: incident   
     links:      
       - kafka1    
       - kafka2    
@@ -131,7 +131,7 @@ services:
     depends_on:     
      - kafka1    
      - kafka2
-     - geo  
+     - incident  
     ports:
       - '12346:12346'  
     networks:

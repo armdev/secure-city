@@ -1,6 +1,6 @@
-package io.project.app.geo.services;
+package io.project.app.incident.services;
 
-import io.project.app.geo.incident.IncidentData;
+import io.project.app.incident.model.IncidentData;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;

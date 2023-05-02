@@ -8,11 +8,11 @@
         <version>3.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>io.project.app.geo</groupId>
-    <artifactId>geo</artifactId>
+    <groupId>io.project.app.incident</groupId>
+    <artifactId>incident</artifactId>
     <version>1.0</version>
-    <name>geo</name>
-    <description>geo location generator</description>
+    <name>incident</name>
+    <description>incident location generator</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -111,7 +111,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>geo</finalName>
+        <finalName>incident</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

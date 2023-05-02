@@ -1,4 +1,4 @@
-package io.project.app.geo.producer;
+package io.project.app.incident.producer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;

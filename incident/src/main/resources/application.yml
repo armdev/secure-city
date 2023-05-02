@@ -22,7 +22,7 @@ server:
       
 spring:
   application:
-    name: geo
+    name: incident
 
   kafka:   
     listener:
@@ -32,6 +32,6 @@ spring:
       bootstrap-servers: kafka1:9092,kafka2:9093
      # bootstrap-servers: localhost:9092,localhost:9093
       buffer-memory: 97938193
-      client-id: geo
-      group-id: geo
+      client-id: incident
+      group-id: incident
       retries: 10       

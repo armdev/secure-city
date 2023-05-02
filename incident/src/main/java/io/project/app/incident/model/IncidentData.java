@@ -1,4 +1,4 @@
-package io.project.app.geo.incident;
+package io.project.app.incident.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

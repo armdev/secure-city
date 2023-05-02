@@ -6,12 +6,11 @@
     <version>1.0</version>
     <packaging>pom</packaging>
     <modules>       
-        <module>geo</module>
+        <module>incident</module>
         <module>alert</module>
         <module>police</module>
         <module>ambulance</module>
-        <module>lakehouse</module>
-          
+        <module>lakehouse</module>          
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

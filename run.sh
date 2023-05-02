@@ -7,4 +7,4 @@ set -e
 
 docker-compose up -d --build
 docker ps -a
-docker logs --follow geo
+docker logs --follow incident

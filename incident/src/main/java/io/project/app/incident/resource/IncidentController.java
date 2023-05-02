@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package io.project.app.geo.resource;
+package io.project.app.incident.resource;
 
 import com.google.gson.Gson;
-import io.project.app.geo.services.GpsDataGenerator;
-import io.project.app.geo.incident.IncidentData;
-import io.project.app.geo.producer.IncidentProducer;
+import io.project.app.incident.services.GpsDataGenerator;
+import io.project.app.incident.model.IncidentData;
+import io.project.app.incident.producer.IncidentProducer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
