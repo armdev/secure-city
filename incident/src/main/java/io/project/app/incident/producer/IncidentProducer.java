@@ -1,7 +1,7 @@
 package io.project.app.incident.producer;
 
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

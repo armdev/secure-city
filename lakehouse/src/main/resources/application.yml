@@ -67,8 +67,10 @@ spring:
   main:
     allow-bean-definition-overriding: false
     allow-circular-references: false
+    
   application:
     name: lakehouse
+    
   profiles:
     active: prod
 
