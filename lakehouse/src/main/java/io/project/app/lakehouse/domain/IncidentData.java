@@ -40,7 +40,7 @@ public class IncidentData implements Serializable {
     private String event;
     @Column(name = "status")
     private String status;
-    @Column(name="transaction_id")
+    @Column(name="transaction_id", unique = true)
     private String transactionId;
     @Column(name = "incident_date")
     private LocalDateTime incidentDate;
