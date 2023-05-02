@@ -62,12 +62,11 @@ public class IncidentProducer {
      * This Kafka sender follows best practices for sending messages
      * asynchronously and transactionally, which ensures that messages are
      * reliably delivered to the Kafka cluster.
+     * @param transactionId
      */
     @SneakyThrows
     @Transactional
-    public void sendMessage(String message) {
-
-        String transactionId = UUID.randomUUID().toString();
+    public void sendMessage(String message, String transactionId) {
 
         ProducerRecord<String, String> producerRecord
                 = new ProducerRecord<>(ALERT_TOPIC, transactionId, message);

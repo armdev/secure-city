@@ -29,10 +29,10 @@ public class AmbulanceDutyConsumer {
             @Header(KafkaHeaders.TOPIC) String topic,
             @Header("X-Producer-Header") String header
     ) {
-        log.info("From alert to Router");
+        log.info("ambulance From alert to Router");
 
-        log.info("KEY '{}' ", key);
-        log.info("Payload '{}' ", payload);
+        log.info("ambulance KEY '{}' ", key);
+        log.info("ambulance Payload '{}' ", payload);
 
         Gson gson = new Gson();
         IncidentData alert = gson.fromJson(payload, IncidentData.class);

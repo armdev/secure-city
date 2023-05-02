@@ -2,6 +2,7 @@ package io.project.app.geo.services;
 
 import io.project.app.geo.incident.IncidentData;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GpsDataGenerator {
@@ -24,7 +25,9 @@ public class GpsDataGenerator {
         String event = RandomEvent.randomEvent().name();
 
         String status = RandomStatus.randomStatus().name();
-        return new IncidentData(lat, lon, event, status);
+
+        String transactionId = UUID.randomUUID().toString();
+        return new IncidentData(lat, lon, event, status, transactionId);
     }
 }
 
@@ -40,7 +43,7 @@ enum RandomEvent {
 }
 
 enum RandomStatus {
-    STARTED, IN_PROGRESS, FINSIHED ;
+    STARTED, IN_PROGRESS, FINSIHED;
 
     private static final Random PRNG = new Random();
 

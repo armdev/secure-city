@@ -23,6 +23,16 @@ public class IncidentData implements Serializable {
     private String event;
     @JsonProperty("status")
     private String status;
+    @JsonProperty("transactionId")
+    private String transactionId;
+
+    public IncidentData(double lat, double lon, String event, String status, String transactionId) {
+        this.lat = lat;
+        this.lon = lon;
+        this.event = event;
+        this.status = status;
+        this.transactionId = transactionId;
+    }
 
     public IncidentData(double lat, double lon, String event, String status) {
         this.lat = lat;

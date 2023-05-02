@@ -14,8 +14,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"io.project"})
-@EnableJpaRepositories("io.project.app.lakehouse.repositories")
-@EntityScan("io.project.app.lakehouse.domain")
+
+
 public class LakehouseApplication {
 
     public static void main(String[] args) {

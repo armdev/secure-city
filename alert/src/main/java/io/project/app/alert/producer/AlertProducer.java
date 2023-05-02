@@ -33,6 +33,8 @@ public class AlertProducer {
 
     private static final String AMBULANCE_TOPIC = "ambulance";
 
+    private static final String LAKEHOUSE_TOPIC = "lakehouse";
+
     @SneakyThrows
     @Transactional
     public void sendMessageToPolice(@NotNull String message) {
@@ -80,6 +82,33 @@ public class AlertProducer {
                     } else {
                         // Handle success
                         log.info("AMBULANCE_TOPIC Message sent: " + sendResult.getProducerRecord().value());
+                    }
+                });
+
+            }
+        });
+    }
+
+    @SneakyThrows
+    @Transactional
+    public void sendMessageLakeHouse(@NotNull String message) {
+        String transactionId = UUID.randomUUID().toString();
+        ProducerRecord<String, String> producerRecord
+                = new ProducerRecord<>(LAKEHOUSE_TOPIC, transactionId, message);
+        producerRecord.headers().add(KafkaHeaders.TOPIC, LAKEHOUSE_TOPIC.getBytes(StandardCharsets.UTF_8));
+        producerRecord.headers().add(KafkaHeaders.KEY, transactionId.getBytes(StandardCharsets.UTF_8));
+        producerRecord.headers().add("X-Producer-Header", "alert".getBytes(StandardCharsets.UTF_8));
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(producerRecord);
+                future.whenComplete((sendResult, throwable) -> {
+                    if (throwable != null) {
+                        // Handle failure
+                        log.error("@KAFKA FAIL: LAKEHOUSE_TOPIC unable to send message='{}'", message, throwable);
+                    } else {
+                        // Handle success
+                        log.info("LAKEHOUSE_TOPIC Message sent: " + sendResult.getProducerRecord().value());
                     }
                 });
 

@@ -1,15 +1,19 @@
 package io.project.app.lakehouse.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nonapi.io.github.classgraph.json.Id;
 
 /**
  *
@@ -24,6 +28,8 @@ public class IncidentData implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @SequenceGenerator(name = "INCIDENT_SEQ_GEN", allocationSize = 1, sequenceName = "INCIDENT_SEQ_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCIDENT_SEQ_GEN")
     @Column(name = "id")
     private Long id;
     @Column(name = "lat")
@@ -34,8 +40,10 @@ public class IncidentData implements Serializable {
     private String event;
     @Column(name = "status")
     private String status;
+    @Column(name="transaction_id")
+    private String transactionId;
     @Column(name = "incident_date")
-    private LocalDateTime registerDate;
+    private LocalDateTime incidentDate;
 
     public IncidentData(double lat, double lon, String event, String status) {
         this.lat = lat;

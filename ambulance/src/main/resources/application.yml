@@ -32,11 +32,11 @@ spring:
       bootstrap-servers: kafka1:9092,kafka2:9093
       buffer-memory: 97938193
       client-id: ambulance
-      group-id: ambulance
+      group-id: ambulance-duty
       retries: 10      
     consumer:
       bootstrap-servers: kafka1:9092,kafka2:9093
-      group-id: ambulance
+      group-id: ambulance-duty
       auto-offset-reset: earliest         
       enable-auto-commit: false
       session.timeout.ms: 30000

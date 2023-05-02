@@ -39,7 +39,7 @@ public class IncidentController {
     public ResponseEntity create() {
         IncidentData gpsData = GpsDataGenerator.generateWithEvent();
         Gson gson = new Gson();
-        geoProducer.sendMessage(gson.toJson(gpsData));
+        geoProducer.sendMessage(gson.toJson(gpsData), gpsData.getTransactionId());
         return ResponseEntity.status(HttpStatus.OK).body("Done");
         
     }

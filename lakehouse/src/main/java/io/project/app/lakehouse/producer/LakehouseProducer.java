@@ -34,7 +34,7 @@ public class LakehouseProducer {
     private static final String AMBULANCE_TOPIC = "ambulance";
 
     @SneakyThrows
-    @Transactional
+    @Transactional(transactionManager = "kafkaTransactionManager")
     public void sendMessageToPolice(@NotNull String message) {
         String transactionId = UUID.randomUUID().toString();
         ProducerRecord<String, String> producerRecord

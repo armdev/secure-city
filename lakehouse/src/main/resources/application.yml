@@ -21,14 +21,15 @@ server:
 
       
 spring:
-  application:
-    name: lakehouse
-    
-  datasource:
+  datasource:   
+   lakehouse:
     hikari:
-        connectionTimeout: 30000
-        idleTimeout: 600000
-        maxLifetime: 1800000
+       connectionTimeout: 30000
+       idleTimeout: 600000
+       maxLifetime: 1800000
+       maximum-pool-size: 10
+       minimum-idle: 5
+       pool-name: poolmpasset
     tomcat:
       initial-size: 50
       max-wait: 80000
@@ -39,25 +40,37 @@ spring:
       removeAbandonedTimeout: 800
       timeBetweenEvictionRunsMillis: 3400000
       minEvictableIdleTimeMillis: 5500000
-      default-auto-commit: false  
-    url: '${POSTGRES_ASSET_URI:jdbc:postgresql://lakehousedb:5432/lakehousedb}'
-    username: '${PGASSET_USER:postgres}'
-    password: '${PGASSET_PASSWORD:cp8@2a#ol}'
+      default-auto-commit: false
+    url: '${POSTGRES_URI:jdbc:postgresql://postgres:5432/lakehousedb}'
+    username: '${POSTGRES_USER:postgres}'
+    password: '${POSTGRES_PASSWORD:cp8@2a#ol}'
     platform: POSTGRESQL
     testWhileIdle: true
-    validationQuery: 'SELECT 1'
-    driver-class-name: org.postgresql.Driver
+    validationQuery: SELECT 1
+    driver-class-name: org.postgresql.Driver   
+     
   jpa:
     show-sql: false
     database: POSTGRESQL
     hibernate:
       ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      dialect: org.hibernate.dialect.PostgreSQL10Dialect
+      query:
+        plan_cache_max_size: 4096
+        plan_parameter_metadata_max_size: 8192
     properties:
       hibernate:
         temp:
           use_jdbc_metadata_defaults: false
+          
+  main:
+    allow-bean-definition-overriding: false
+    allow-circular-references: false
+  application:
+    name: lakehouse
+  profiles:
+    active: prod
 
   kafka:   
     listener:
@@ -67,11 +80,11 @@ spring:
       bootstrap-servers: kafka1:9092,kafka2:9093
       buffer-memory: 97938193
       client-id: lakehouse
-      group-id: lakehouse
+      group-id: lakehouse-duty
       retries: 10      
     consumer:
       bootstrap-servers: kafka1:9092,kafka2:9093
-      group-id: lakehouse
+      group-id: lakehouse-duty
       auto-offset-reset: earliest         
       enable-auto-commit: false
       session.timeout.ms: 30000

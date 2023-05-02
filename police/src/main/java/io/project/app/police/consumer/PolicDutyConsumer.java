@@ -21,16 +21,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PolicDutyConsumer {
 
-    @KafkaListener(topics = "police", groupId = "police-notify", concurrency = "3")
+    @KafkaListener(topics = "police", groupId = "police-duty", concurrency = "3")
     public void receiveAndSendToAlertRouter(@Payload String payload,
             @Header(KafkaHeaders.KEY) String key,
             @Header(KafkaHeaders.TOPIC) String topic,
             @Header("X-Producer-Header") String header
     ) {
-        log.info("From alert to Router");
+        log.info("police From alert to Router");
 
-        log.info("KEY '{}' ", key);
-        log.info("Payload '{}' ", payload);
+        log.info("police KEY '{}' ", key);
+        log.info("police Payload '{}' ", payload);
 
         Gson gson = new Gson();
         IncidentData alert = gson.fromJson(payload, IncidentData.class);
