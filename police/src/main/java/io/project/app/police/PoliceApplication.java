@@ -4,9 +4,10 @@ import io.project.app.police.domain.PoliceCar;
 import io.project.app.police.domain.PoliceOfficer;
 import io.project.app.police.repositories.PoliceCarJpaRepository;
 import io.project.app.police.repositories.PoliceOfficerJpaRepository;
+import io.project.app.police.services.DutyAssignmentGeneratorService;
 import io.project.app.police.services.PoliceCarGenerator;
 import io.project.app.police.services.PoliceOfficerGenerator;
-import java.time.LocalDateTime;
+
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,8 @@ public class PoliceApplication {
 
     @Autowired
     private PoliceCarJpaRepository policeCarJpaRepository;
+    @Autowired
+    private DutyAssignmentGeneratorService dutyAssignmentGeneratorService;
 
     @EventListener(ApplicationReadyEvent.class)
     @Transactional(transactionManager = "transactionManager")
@@ -72,6 +75,8 @@ public class PoliceApplication {
         policeOfficerJpaRepository.saveAll(generateOfficers);
         long officerCount = policeOfficerJpaRepository.count();
         log.info("Count of Officer  " + officerCount);
+
+        dutyAssignmentGeneratorService.generateDutyAssignments();
 
     }
 }
