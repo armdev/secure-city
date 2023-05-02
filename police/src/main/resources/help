@@ -1,0 +1,3 @@
+ALTER TABLE IF EXISTS public.current_duty_assignments ADD CONSTRAINT fk_car FOREIGN KEY (car_id) REFERENCES police_car(id) ON DELETE SET NULL
+
+ALTER TABLE IF EXISTS public.current_duty_assignments ADD CONSTRAINT fk_officer FOREIGN KEY (cofficer_id) REFERENCES police_officer(id) ON DELETE SET NULL
