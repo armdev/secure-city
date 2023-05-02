@@ -81,7 +81,7 @@ public class IncidentProducer {
                 future.whenComplete((sendResult, throwable) -> {
                     if (throwable != null) {
                         // Handle failure
-                        log.error("@KAFKA FAIL: tpoutput unable to send message='{}'", message, throwable);
+                        log.error("@KAFKA FAIL: incident unable to send message='{}'", message, throwable);
                     } else {
                         // Handle success
                         log.info("Message sent: " + sendResult.getProducerRecord().value());
