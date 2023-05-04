@@ -38,14 +38,9 @@ public class CurrentDutyAssignment implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "assignment_officers",
-            joinColumns = @JoinColumn(name = "assignment_id"),
-            inverseJoinColumns = @JoinColumn(name = "officer_id")
-    )
-    private List<PoliceOfficer> officer = new ArrayList<>();
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "officer_id")
+    private PoliceOfficer officer;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_Id")
     private PoliceCar car;

@@ -63,8 +63,8 @@ public class PoliceApplication {
     @Autowired
     private DutyAssignmentGeneratorService dutyAssignmentGeneratorService;
 
-    @EventListener(ApplicationReadyEvent.class)
-    @Transactional(transactionManager = "transactionManager")
+   // @EventListener(ApplicationReadyEvent.class)
+    ////@Transactional(transactionManager = "transactionManager")
     public void init() {
         ///policeCarJpaRepository.deleteAll();
         List<PoliceCar> generateCars = PoliceCarGenerator.generateCars(50);

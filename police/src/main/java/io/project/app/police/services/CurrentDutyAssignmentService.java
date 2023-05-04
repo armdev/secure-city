@@ -49,7 +49,8 @@ public class CurrentDutyAssignmentService {
         }
 
         CurrentDutyAssignment assignment = new CurrentDutyAssignment(car, lat, lon);
-        assignment.getOfficer().add(officer);
+        assignment.setOfficer(officer);
+        
         assignment = currentDutyAssignmentRepository.save(assignment);
         car.setAvailable(false);
         policeCarRepository.save(car);

@@ -50,11 +50,14 @@ public class DutyAssignmentGeneratorService {
             double lon = BERLIN_LONGITUDE + ThreadLocalRandom.current().nextDouble(-MAX_DISTANCE_KM, MAX_DISTANCE_KM) / EARTH_RADIUS_KM * (180 / Math.PI) / Math.cos(BERLIN_LATITUDE * Math.PI / 180);
 
             CurrentDutyAssignment assignment1 = new CurrentDutyAssignment(car, lat, lon);
-            assignment1.getOfficer().add(officer1);
-            assignment1.getOfficer().add(officer2);            
+            assignment1.setOfficer(officer1);
+
             currentDutyAssignmentRepository.save(assignment1);
 
-          
+            CurrentDutyAssignment assignment2 = new CurrentDutyAssignment(car, lat, lon);
+            assignment2.setOfficer(officer2);
+
+            currentDutyAssignmentRepository.save(assignment2);
 
             car.setAvailable(false);
             policeCarRepository.save(car);
