@@ -1,10 +1,12 @@
 package io.project.app.lakehouse;
 
+import jakarta.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
@@ -18,6 +20,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
 import org.springframework.kafka.transaction.KafkaTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableKafka
@@ -27,6 +31,9 @@ public class KafkaProducerConfig {
 
     @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServers;
+
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
     @Bean
     public KafkaAdmin admin() {
@@ -43,6 +50,13 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaTransactionManager<String, String> kafkaTransactionManager(ProducerFactory<String, String> producerFactory) {
         return new KafkaTransactionManager<>(producerFactory);
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory);
+        return transactionManager;
     }
 
     @Bean

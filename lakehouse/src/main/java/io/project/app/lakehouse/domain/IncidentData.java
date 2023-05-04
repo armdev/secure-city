@@ -1,6 +1,5 @@
 package io.project.app.lakehouse.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,8 +27,8 @@ public class IncidentData implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @SequenceGenerator(name = "INCIDENT_SEQ_GEN", allocationSize = 1, sequenceName = "INCIDENT_SEQ_GEN")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCIDENT_SEQ_GEN")
+    @SequenceGenerator(name = "CITY_INCIDENT_SEQ_GEN", allocationSize = 1, sequenceName = "CITY_INCIDENT_SEQ_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CITY_INCIDENT_SEQ_GEN")
     @Column(name = "id")
     private Long id;
     @Column(name = "lat")

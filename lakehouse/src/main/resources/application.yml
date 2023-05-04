@@ -21,15 +21,14 @@ server:
 
       
 spring:
-  datasource:   
-   lakehouse:
+  datasource:  
     hikari:
        connectionTimeout: 30000
        idleTimeout: 600000
        maxLifetime: 1800000
        maximum-pool-size: 10
        minimum-idle: 5
-       pool-name: poolmpasset
+       pool-name: poollake
     tomcat:
       initial-size: 50
       max-wait: 80000
