@@ -7,10 +7,12 @@ package io.project.app.police.services;
 import io.project.app.police.domain.CurrentDutyAssignment;
 import io.project.app.police.domain.PoliceCar;
 import io.project.app.police.domain.PoliceOfficer;
+import io.project.app.police.incident.DutyAssignmentDto;
 import io.project.app.police.repositories.CurrentDutyAssignmentRepository;
 import io.project.app.police.repositories.PoliceCarJpaRepository;
 import io.project.app.police.repositories.PoliceOfficerJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,12 @@ public class CurrentDutyAssignmentService {
         assignment.getCar().setAvailable(true);
         policeCarRepository.save(assignment.getCar());
         currentDutyAssignmentRepository.delete(assignment);
+    }
+    
+    
+    public List<DutyAssignmentDto> getInfo() {
+      
+       return currentDutyAssignmentRepository.findAllBy();
     }
 
 }

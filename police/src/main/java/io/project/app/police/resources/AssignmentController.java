@@ -1,13 +1,16 @@
 package io.project.app.police.resources;
 
 import io.project.app.police.domain.CurrentDutyAssignment;
+import io.project.app.police.incident.DutyAssignmentDto;
 import io.project.app.police.services.CurrentDutyAssignmentService;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +57,13 @@ public class AssignmentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/assignments/info")
+    public ResponseEntity<?> info() {
+        List<DutyAssignmentDto> info = currentDutyAssignmentService.getInfo();
+        return ResponseEntity.ok().body(info);
+
     }
 
 }
