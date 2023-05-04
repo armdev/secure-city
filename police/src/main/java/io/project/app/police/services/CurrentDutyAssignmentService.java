@@ -46,7 +46,8 @@ public class CurrentDutyAssignmentService {
             throw new IllegalStateException("PoliceCar with id " + carId + " is not available for assignment");
         }
 
-        CurrentDutyAssignment assignment = new CurrentDutyAssignment(officer, car, lat, lon);
+        CurrentDutyAssignment assignment = new CurrentDutyAssignment(car, lat, lon);
+        assignment.getOfficer().add(officer);
         assignment = currentDutyAssignmentRepository.save(assignment);
         car.setAvailable(false);
         policeCarRepository.save(car);

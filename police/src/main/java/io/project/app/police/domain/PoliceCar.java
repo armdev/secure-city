@@ -47,8 +47,7 @@ public class PoliceCar implements Serializable {
     @Column(name = "register_date")
     private LocalDateTime registerDate;    
     @Column(name = "available")
-    private boolean available;
-    
+    private boolean available;    
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<CurrentDutyAssignment> assignments;
 
