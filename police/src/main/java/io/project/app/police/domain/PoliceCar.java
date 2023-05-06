@@ -1,55 +1,56 @@
 package io.project.app.police.domain;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  *
  * @author armena
  */
 @Data
-@Entity
-@Table(name = "police_car", schema = "public")
+@Document(collection = "police_car")
 @AllArgsConstructor
 @NoArgsConstructor
 public class PoliceCar implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -7340797464295033378L;
+
     @Id
-    @Basic(optional = false)
-    @SequenceGenerator(name = "POLICE_CAR_SEQ_GEN", allocationSize = 1, sequenceName = "POLICE_CAR_SEQ_GEN")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POLICE_CAR_SEQ_GEN")
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "make")
+    private String id;
+    @Field
     private String make;
-    @Column(name = "model")
+    @Field
     private String model;
-    @Column(name = "year")    
+    @Field
     private Integer year;
-    @Column(name = "duty")    
+    @Field
     private String duty;
-    @Column(name = "car_number")
-    private String carNumber;    
-    @Column(name = "register_date")
-    private LocalDateTime registerDate;    
-    @Column(name = "available")
-    private boolean available;    
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    private List<CurrentDutyAssignment> assignments;
+    @Field
+    private String carNumber;
+
+    @Field
+    private LocalDateTime registerDate;
+
+    @Field
+    private boolean available;
+
+    private PoliceDuty policeDuty;
+
+    private CarLocation currentLocation;
+
+    private List<CarLocation> locationHistory = new ArrayList<>();
+
+    private List<PoliceDuty> dutyHistory = new ArrayList<>();
 
     public PoliceCar(String make, String model, Integer year, String duty, String carNumber, LocalDateTime registerDate, boolean available) {
         this.make = make;

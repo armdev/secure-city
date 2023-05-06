@@ -21,47 +21,16 @@ server:
 
       
 spring:
-  datasource:  
-    hikari:
-       connectionTimeout: 30000
-       idleTimeout: 600000
-       maxLifetime: 1800000
-       maximum-pool-size: 10
-       minimum-idle: 5
-       pool-name: poolmpasset
-    tomcat:
-      initial-size: 50
-      max-wait: 80000
-      max-active: 600
-      max-idle: 100
-      min-idle: 30
-      removeAbandoned: true
-      removeAbandonedTimeout: 800
-      timeBetweenEvictionRunsMillis: 3400000
-      minEvictableIdleTimeMillis: 5500000
-      default-auto-commit: false
-    url: '${POSTGRES_URI:jdbc:postgresql://postgres:5432/lakehousedb}'
-    username: '${POSTGRES_USER:postgres}'
-    password: '${POSTGRES_PASSWORD:cp8@2a#ol}'
-    platform: POSTGRESQL
-    testWhileIdle: true
-    validationQuery: SELECT 1
-    driver-class-name: org.postgresql.Driver   
-     
-  jpa:
-    show-sql: false
-    database: POSTGRESQL
-    hibernate:
-      ddl-auto: update
-      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-      dialect: org.hibernate.dialect.PostgreSQL10Dialect
-      query:
-        plan_cache_max_size: 4096
-        plan_parameter_metadata_max_size: 8192
-    properties:
-      hibernate:
-        temp:
-          use_jdbc_metadata_defaults: false
+  data:
+    mongodb:
+      database: policeDB
+      username: uber
+      password: uber123
+      authentication-database: admin
+      primary:
+         auto-index-creation: true
+         database: driverDB
+         uri: mongodb://uber:uber123@mongo1:27017/policeDB?replicaSet=dbrs&readPreference=primaryPreferred&authSource=admin  
           
   main:
     allow-bean-definition-overriding: false

@@ -1,4 +1,4 @@
-package io.project.app.police.services;
+package io.project.app.police.helpers;
 
 import io.project.app.police.domain.PoliceCar;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public class PoliceCarGenerator {
             int year = 2020 + rand.nextInt(4); // 2020-2023
             String duty = DUTIES[rand.nextInt(DUTIES.length)];
             String carNumber = CAR_PREFIXES[rand.nextInt(CAR_PREFIXES.length)] + "-" + String.format("%04d", rand.nextInt(10000));
-
+//
             PoliceCar car = new PoliceCar(make, model, year, duty, carNumber, LocalDateTime.now(), true);
             cars.add(car);
         }

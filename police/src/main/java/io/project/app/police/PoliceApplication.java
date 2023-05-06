@@ -2,12 +2,10 @@ package io.project.app.police;
 
 import io.project.app.police.domain.PoliceCar;
 import io.project.app.police.domain.PoliceOfficer;
-import io.project.app.police.repositories.PoliceCarJpaRepository;
-import io.project.app.police.repositories.PoliceOfficerJpaRepository;
-import io.project.app.police.services.DutyAssignmentGeneratorService;
-import io.project.app.police.services.PoliceCarGenerator;
-import io.project.app.police.services.PoliceOfficerGenerator;
-
+import io.project.app.police.helpers.PoliceCarGenerator;
+import io.project.app.police.helpers.PoliceOfficerGenerator;
+import io.project.app.police.services.PoliceCarService;
+import io.project.app.police.services.PoliceOfficerService;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -29,9 +25,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @ComponentScan(basePackages = {"io.project"})
 @Slf4j
-@EnableJpaRepositories(basePackages = {
-    "io.project.app.police.repositories"})
-@EntityScan("io.project.app.police.domain")
+
+
 public class PoliceApplication {
 
     public static void main(String[] args) {
@@ -54,29 +49,18 @@ public class PoliceApplication {
             }
         };
     }
-
     @Autowired
-    private PoliceOfficerJpaRepository policeOfficerJpaRepository;
-
+    private PoliceOfficerService policeOfficerService;
     @Autowired
-    private PoliceCarJpaRepository policeCarJpaRepository;
-    @Autowired
-    private DutyAssignmentGeneratorService dutyAssignmentGeneratorService;
+    private PoliceCarService policeCarService;
 
-   // @EventListener(ApplicationReadyEvent.class)
-    ////@Transactional(transactionManager = "transactionManager")
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        ///policeCarJpaRepository.deleteAll();
+        
         List<PoliceCar> generateCars = PoliceCarGenerator.generateCars(50);
-        policeCarJpaRepository.saveAll(generateCars);
-        long count = policeCarJpaRepository.count();
-        log.info("Count of cars  " + count);
-        List<PoliceOfficer> generateOfficers = PoliceOfficerGenerator.generateOfficers(80);
-        policeOfficerJpaRepository.saveAll(generateOfficers);
-        long officerCount = policeOfficerJpaRepository.count();
-        log.info("Count of Officer  " + officerCount);
-
-        dutyAssignmentGeneratorService.generateDutyAssignments();
+        policeCarService.saveAll(generateCars);
+        List<PoliceOfficer> generateOfficers = PoliceOfficerGenerator.generateOfficers(150);
+        policeOfficerService.saveAll(generateOfficers);
 
     }
 }
