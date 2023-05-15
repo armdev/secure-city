@@ -24,16 +24,18 @@ public class PoliceCarCreationRequest implements Serializable {
     @NotNull
     @NotBlank
     private String make;
-    
+
     @NotNull
     @NotBlank
     private String model;
 
     @Positive
     private Integer year;
+    
     @NotNull
     @NotBlank
     private String duty;
+    
     @NotNull
     @NotBlank
     private String carNumber;

@@ -24,8 +24,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @ComponentScan(basePackages = {"io.project"})
 @Slf4j
-
-
 public class PoliceApplication {
 
     public static void main(String[] args) {
@@ -50,12 +48,13 @@ public class PoliceApplication {
     }
     @Autowired
     private PoliceOfficerService policeOfficerService;
+    
     @Autowired
     private PoliceCarService policeCarService;
 
-    @EventListener(ApplicationReadyEvent.class)
+   //// @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        
+
         List<PoliceCar> generateCars = PoliceCarGenerator.generateCars(50);
         policeCarService.saveAll(generateCars);
         List<PoliceOfficer> generateOfficers = PoliceOfficerGenerator.generateOfficers(150);

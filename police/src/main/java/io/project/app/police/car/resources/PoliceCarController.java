@@ -1,4 +1,4 @@
-package io.project.app.police.resources;
+package io.project.app.police.car.resources;
 
 import io.project.app.police.domain.PoliceCar;
 import io.project.app.police.services.PoliceCarSearchService;
@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author user
- */
 @RestController
 @RequestMapping("/api/police-cars")
 public class PoliceCarController {
@@ -22,11 +18,10 @@ public class PoliceCarController {
         this.policeCarSearchService = policeCarSearchService;
     }
 
-    @GetMapping("/available")
+    @GetMapping("/find/available/cars")
     public ResponseEntity<?> findTop() {
         List<PoliceCar> findTop10ByAvailableIsTrue = policeCarSearchService.findTop10ByAvailableIsTrue();
         return ResponseEntity.ok(findTop10ByAvailableIsTrue);
     }
 
-    
 }

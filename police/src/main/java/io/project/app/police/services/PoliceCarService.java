@@ -5,11 +5,14 @@ import io.project.app.police.domain.PoliceCar;
 import io.project.app.police.domain.PoliceDuty;
 import io.project.app.police.domain.PoliceOfficer;
 import io.project.app.police.helpers.PoliceCarCreationRequest;
+import io.project.app.police.helpers.PoliceCarLocationGenerator;
 import io.project.app.police.repositories.PoliceCarRepository;
 import io.project.app.police.repositories.PoliceOfficerRepository;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +31,12 @@ public class PoliceCarService {
     public PoliceCar createNewPoliceCar(PoliceCarCreationRequest policeCarCreationRequest) {
         PoliceCar policeCar = new PoliceCar(policeCarCreationRequest.getMake(), policeCarCreationRequest.getModel(), policeCarCreationRequest.getYear(), policeCarCreationRequest.getDuty(),
                 policeCarCreationRequest.getCarNumber(), LocalDateTime.now(), true);
+        CarLocation generate = PoliceCarLocationGenerator.generate();
+        policeCar.setCurrentLocation(generate);
         return policeCarRepository.save(policeCar);
     }
 
-    public PoliceCar createNewDutyAndUpdateHistory(String policeCarId, String primaryOfficerId, String secondaryOfficerId) {
+    public Optional<PoliceCar> createNewDutyAndUpdateHistory(@NotNull String policeCarId, @NotNull String primaryOfficerId, @NotNull String secondaryOfficerId) {
         PoliceCar policeCar = policeCarRepository.findById(policeCarId)
                 .orElseThrow(() -> new RuntimeException("Police car not found with id: " + policeCarId));
 
@@ -41,6 +46,20 @@ public class PoliceCarService {
         PoliceOfficer secondaryOfficer = policeOfficerRepository.findById(secondaryOfficerId)
                 .orElseThrow(() -> new RuntimeException("Secondary officer not found with id: " + secondaryOfficerId));
 
+        Optional<PoliceCar> primaryOfficerInDuty = policeCarRepository.findByPoliceDutyPrimaryOfficerIdOrPoliceDutySecondaryOfficerId(primaryOfficerId, primaryOfficerId);
+
+        if (!primaryOfficerInDuty.isEmpty()) {
+            log.error("Officer already in duty " + primaryOfficerId);
+            return Optional.empty();
+        }
+
+        Optional<PoliceCar> secondaryOfficerIdInDuty = policeCarRepository.findByPoliceDutyPrimaryOfficerIdOrPoliceDutySecondaryOfficerId(secondaryOfficerId, secondaryOfficerId);
+
+        if (!secondaryOfficerIdInDuty.isEmpty()) {
+            log.error("Officer already in duty " + secondaryOfficerId);
+            return Optional.empty();
+        }
+
         PoliceDuty newDuty = new PoliceDuty();
         newDuty.setPrimaryOfficer(primaryOfficer);
         newDuty.setSecondaryOfficer(secondaryOfficer);
@@ -49,14 +68,17 @@ public class PoliceCarService {
         policeCar.setPoliceDuty(newDuty);
         policeCar.getDutyHistory().add(0, newDuty);
 
-        return policeCarRepository.save(policeCar);
+        return Optional.of(policeCarRepository.save(policeCar));
     }
 
     public PoliceCar changeOfficerInTheDutyAndUpdateHistory(String policeCarId, String existingOfficerId, String newOfficerId) {
+        //add validations
+        
         PoliceCar policeCar = policeCarRepository.findById(policeCarId)
                 .orElseThrow(() -> new RuntimeException("Police car not found with id: " + policeCarId));
 
         PoliceDuty currentDuty = policeCar.getPoliceDuty();
+        
         if (currentDuty == null) {
             throw new RuntimeException("No duty found for police car with id: " + policeCarId);
         }

@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class PolicDutyConsumer {
 
     @KafkaListener(topics = "police", groupId = "police-duty", concurrency = "3")
-    public void receiveAndSendToAlertRouter(@Payload String payload,
+    public void receive(@Payload String payload,
             @Header(KafkaHeaders.KEY) String key,
             @Header(KafkaHeaders.TOPIC) String topic,
             @Header("X-Producer-Header") String header
@@ -35,6 +35,7 @@ public class PolicDutyConsumer {
         Gson gson = new Gson();
         IncidentData alert = gson.fromJson(payload, IncidentData.class);
 
+        //find duty , match and assingn
     }
 
 }

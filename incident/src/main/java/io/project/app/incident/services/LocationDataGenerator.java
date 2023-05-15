@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GpsDataGenerator {
+public class LocationDataGenerator {
 
     private static final double BERLIN_LATITUDE = 52.5200;
     private static final double BERLIN_LONGITUDE = 13.4050;
