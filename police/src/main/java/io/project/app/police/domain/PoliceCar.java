@@ -61,5 +61,6 @@ public class PoliceCar implements Serializable {
         this.registerDate = registerDate;
         this.available = available;
     }
+    
 
 }

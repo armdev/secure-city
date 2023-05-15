@@ -4,6 +4,7 @@ import io.project.app.police.domain.CarLocation;
 import io.project.app.police.domain.PoliceCar;
 import io.project.app.police.domain.PoliceDuty;
 import io.project.app.police.domain.PoliceOfficer;
+import io.project.app.police.helpers.PoliceCarCreationRequest;
 import io.project.app.police.repositories.PoliceCarRepository;
 import io.project.app.police.repositories.PoliceOfficerRepository;
 import java.time.LocalDateTime;
@@ -24,7 +25,9 @@ public class PoliceCarService {
         this.policeOfficerRepository = policeOfficerRepository;
     }
 
-    public PoliceCar createNewPoliceCar(PoliceCar policeCar) {
+    public PoliceCar createNewPoliceCar(PoliceCarCreationRequest policeCarCreationRequest) {
+        PoliceCar policeCar = new PoliceCar(policeCarCreationRequest.getMake(), policeCarCreationRequest.getModel(), policeCarCreationRequest.getYear(), policeCarCreationRequest.getDuty(),
+                policeCarCreationRequest.getCarNumber(), LocalDateTime.now(), true);
         return policeCarRepository.save(policeCar);
     }
 

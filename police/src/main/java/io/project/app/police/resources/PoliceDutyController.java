@@ -4,6 +4,7 @@ import io.project.app.police.domain.CarLocation;
 import io.project.app.police.domain.PoliceCar;
 import io.project.app.police.helpers.ChangeDutyRequest;
 import io.project.app.police.helpers.NewDutyRequest;
+import io.project.app.police.helpers.PoliceCarCreationRequest;
 import io.project.app.police.services.PoliceCarService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class PoliceDutyController {
     }
 
     @PostMapping
-    public ResponseEntity<PoliceCar> createNewPoliceCar(@RequestBody PoliceCar policeCar) {
+    public ResponseEntity<PoliceCar> createNewPoliceCar(@RequestBody PoliceCarCreationRequest policeCar) {
         PoliceCar createdCar = policeCarService.createNewPoliceCar(policeCar);
         return ResponseEntity.ok(createdCar);
     }
