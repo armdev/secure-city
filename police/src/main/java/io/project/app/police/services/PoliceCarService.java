@@ -99,10 +99,9 @@ public class PoliceCarService {
         return policeCarRepository.save(policeCar);
 
     }
-    
-     public void saveAll(List<PoliceCar> list) {
-       
 
-         policeCarRepository.saveAll(list);
+    public void saveAll(List<PoliceCar> list) {
+
+        policeCarRepository.saveAll(list);
     }
 }

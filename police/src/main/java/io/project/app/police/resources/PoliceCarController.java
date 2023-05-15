@@ -1,19 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package io.project.app.police.resources;
 
-import io.project.app.police.domain.CarLocation;
 import io.project.app.police.domain.PoliceCar;
-import io.project.app.police.services.PoliceCarService;
+import io.project.app.police.services.PoliceCarSearchService;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,38 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/police-cars")
 public class PoliceCarController {
 
-    private final PoliceCarService policeCarService;
+    private final PoliceCarSearchService policeCarSearchService;
 
-    public PoliceCarController(PoliceCarService policeCarService) {
-        this.policeCarService = policeCarService;
+    public PoliceCarController(PoliceCarSearchService policeCarSearchService) {
+        this.policeCarSearchService = policeCarSearchService;
     }
 
-    @PostMapping
-    public ResponseEntity<PoliceCar> createNewPoliceCar(@RequestBody PoliceCar policeCar) {
-        PoliceCar createdCar = policeCarService.createNewPoliceCar(policeCar);
-        return ResponseEntity.ok(createdCar);
+    @GetMapping("/available")
+    public ResponseEntity<?> findTop() {
+        List<PoliceCar> findTop10ByAvailableIsTrue = policeCarSearchService.findTop10ByAvailableIsTrue();
+        return ResponseEntity.ok(findTop10ByAvailableIsTrue);
     }
 
-    @PostMapping("/{policeCarId}/duty")
-    public ResponseEntity<PoliceCar> createNewDutyAndUpdateHistory(@PathVariable String policeCarId,
-                                                                   @RequestParam String primaryOfficerId,
-                                                                   @RequestParam String secondaryOfficerId) {
-        PoliceCar updatedCar = policeCarService.createNewDutyAndUpdateHistory(policeCarId, primaryOfficerId, secondaryOfficerId);
-        return ResponseEntity.ok(updatedCar);
-    }
-
-    @PutMapping("/{policeCarId}/duty/{existingOfficerId}")
-    public ResponseEntity<PoliceCar> changeOfficerInTheDutyAndUpdateHistory(@PathVariable String policeCarId,
-                                                                            @PathVariable String existingOfficerId,
-                                                                            @RequestParam String newOfficerId) {
-        PoliceCar updatedCar = policeCarService.changeOfficerInTheDutyAndUpdateHistory(policeCarId, existingOfficerId, newOfficerId);
-        return ResponseEntity.ok(updatedCar);
-    }
-
-    @PutMapping("/{policeCarId}/location")
-    public ResponseEntity<PoliceCar> updateCurrentLocationAndHistory(@PathVariable String policeCarId,
-                                                                      @RequestBody CarLocation carLocation) {
-        PoliceCar updatedCar = policeCarService.updateCurrentLocationAndHistory(policeCarId, carLocation);
-        return ResponseEntity.ok(updatedCar);
-    }
+    
 }
