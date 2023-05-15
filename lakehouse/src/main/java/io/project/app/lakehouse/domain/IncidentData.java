@@ -25,6 +25,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class IncidentData implements Serializable {
 
+    private static final long serialVersionUID = -680804308542364590L;
+
     @Id
     @Basic(optional = false)
     @SequenceGenerator(name = "CITY_INCIDENT_SEQ_GEN", allocationSize = 1, sequenceName = "CITY_INCIDENT_SEQ_GEN")

@@ -4,6 +4,7 @@
  */
 package io.project.app.police.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -16,7 +17,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Document(collection = "police_audit_logs")
-public class PoliceAuditLog implements Serializable{
+public class PoliceAuditLog implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 9049723802624970610L;
 
     @Id
     private String id;

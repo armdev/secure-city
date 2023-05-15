@@ -3,6 +3,7 @@ package io.project.app.alert.incident;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -14,6 +15,9 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IncidentData implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -5957488708523407046L;
 
     @JsonProperty("lat")
     private double lat;
